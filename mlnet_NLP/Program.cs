@@ -43,13 +43,15 @@ namespace mlnet_NLP
              
             //create data sets for trainiing and testing
             trainingData = context.Data.CreateEnumerable<FAQModel>(split.TrainSet, reuseRowObject: false);
-            testingData = context.Data.CreateEnumerable<FAQModel>(split.TestSet, reuseRowObject: false);
+            testingData = context.Data.CreateEnumerable<FAQModel>(split.TestSet, reuseRowObject: true);
+
+            Console.WriteLine(trainingData.First().Answer);
 
             //Create our pipeline and set our training model
             var pipeline = context.Transforms.Conversion.MapValueToKey(outputColumnName: "Label", inputColumnName: "Answer") //converts string to key value for training
                 .Append(context.Transforms.Text.FeaturizeText( "Features","Question")) //creates features from our text string
                 .Append(context.MulticlassClassification.Trainers.SdcaMaximumEntropy(labelColumnName: "Label", featureColumnName: "Features"))//set up our model
-                .Append(context.Transforms.Conversion.MapKeyToValue(outputColumnName: "PredictedAnswer", inputColumnName: "Label")); //convert our key back to a label
+                .Append(context.Transforms.Conversion.MapKeyToValue(outputColumnName: "PredictedAnswer", inputColumnName: "PredictedLabel")); //convert our key back to a label
 
             //traings the model
              model = pipeline.Fit(context.Data.LoadFromEnumerable(trainingData));
@@ -61,7 +63,7 @@ namespace mlnet_NLP
             IDataView testDataPredictions = model.Transform(context.Data.LoadFromEnumerable(testingData));
             //evaluate test data against trained model for accuracy
             var metrics = context.MulticlassClassification.Evaluate(testDataPredictions);
-            double accuracy = metrics.MicroAccuracy;
+            double accuracy = metrics.MacroAccuracy;
 
             Console.WriteLine("Accuracy {0}", accuracy.ToString());
         }
@@ -78,6 +80,11 @@ namespace mlnet_NLP
 
             //get score, score is an array and the max score will align to key.
             float score = prediction.Score.Max();
+
+            foreach(float s in prediction.Score)
+            {
+                Console.WriteLine(s);
+            }
         
             Console.WriteLine("Prediction: {0},  accuracy: {1}", prediction.PredictedAnswer, score);
 
