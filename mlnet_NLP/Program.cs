@@ -45,8 +45,6 @@ namespace mlnet_NLP
             trainingData = context.Data.CreateEnumerable<FAQModel>(split.TrainSet, reuseRowObject: false);
             testingData = context.Data.CreateEnumerable<FAQModel>(split.TestSet, reuseRowObject: true);
 
-            Console.WriteLine(trainingData.First().Answer);
-
             //Create our pipeline and set our training model
             var pipeline = context.Transforms.Conversion.MapValueToKey(outputColumnName: "Label", inputColumnName: "Answer") //converts string to key value for training
                 .Append(context.Transforms.Text.FeaturizeText( "Features","Question")) //creates features from our text string
@@ -80,11 +78,6 @@ namespace mlnet_NLP
 
             //get score, score is an array and the max score will align to key.
             float score = prediction.Score.Max();
-
-            foreach(float s in prediction.Score)
-            {
-                Console.WriteLine(s);
-            }
         
             Console.WriteLine("Prediction: {0},  accuracy: {1}", prediction.PredictedAnswer, score);
 
