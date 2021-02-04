@@ -36,14 +36,15 @@ namespace mlnet_NLP
             //Load data from csv file
             var data = context.Data.LoadFromTextFile<FAQModel>("faq.csv", hasHeader:true, separatorChar: ',', allowQuoting: true, allowSparse:true, trimWhitespace: true);
             
-            
-            //Splits data into training and testing data
-            var split = context.Data.TrainTestSplit(data);
-            
-             
+  
             //create data sets for trainiing and testing
-            trainingData = context.Data.CreateEnumerable<FAQModel>(split.TrainSet, reuseRowObject: false);
-            testingData = context.Data.CreateEnumerable<FAQModel>(split.TestSet, reuseRowObject: true);
+            trainingData = context.Data.CreateEnumerable<FAQModel>(data, reuseRowObject: false);
+            testingData = new List<FAQModel>()
+            {
+                new FAQModel() {Question = "When are you open?", Answer = "Our hours are 9 am to 5pm Monday through Friday"},
+                new FAQModel() {Question = "Can i pay using a visa card?", Answer =  "Our payment options are Credit, Check, or Bitcoin"},
+                new FAQModel() {Question = "How can i contact you.", Answer = "Our phone number is 555-5555 and our fax is 555-5557"}
+            };
 
             //Create our pipeline and set our training model
             var pipeline = context.Transforms.Conversion.MapValueToKey(outputColumnName: "Label", inputColumnName: "Answer") //converts string to key value for training
