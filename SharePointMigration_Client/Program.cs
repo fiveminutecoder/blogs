@@ -15,7 +15,7 @@ namespace SharePointMigration_Client
         //making this a property so we do not have to keep recreating the object
         static QueueClient queue; 
         //connection string to our storage account, it is shared between blobs and queues.
-        static string cs = "<Connection string from Azure>";
+        static string cs = "DefaultEndpointsProtocol=https;AccountName=fiveminute;AccountKey=M2Ezz9UiPkfg/voWgM3xgDeUek7mpsEuujiKXvgf69Y1/ikheLFP6opQ0jwQBTkd6zxop7ZY+MNZvsR2buzb3g==;EndpointSuffix=core.windows.net";
 
         static async Task Main(string[] args)
         {
