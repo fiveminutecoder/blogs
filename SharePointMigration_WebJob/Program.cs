@@ -126,7 +126,7 @@ namespace SharePointMigration_WebJob
         ///</summary>
         public static async Task<string> GetGraphAPIToken()
         {
-            string tenantId = "<TenantID found in Azur>"; //realm
+            string tenantId = "<TenantID found in Azure>"; //realm
             //some service account to upload docs. Documents cannot use app
             string clientId = "<ClientID for our app>"; 
             //service account password
