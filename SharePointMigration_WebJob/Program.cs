@@ -87,13 +87,11 @@ namespace SharePointMigration_WebJob
             
         }
 
-        ///
         ///<summary>
         ///Pulls data from Azure Queue
         ///</summary>
         ///<param name="MessageCount">The number of messages in the queue to pull</param>
         ///<param name="QueueLock">This locks the messages so they cannot be pulled again for X number of seconds</param>
-        ///
         public static async Task<QueueMessage[]> GetFileMetaDataFromQueue(int MessageCount=1, int QueueLock=60)
         {
             //calls the queue and pulls messages for processing
@@ -216,8 +214,6 @@ namespace SharePointMigration_WebJob
                     throw ex;
                 }
             }
-
-
         }
 
         ///<summary>
@@ -230,6 +226,10 @@ namespace SharePointMigration_WebJob
             await queue.DeleteMessageAsync(MessageId, Receipt);
         }
 
+        ///<summary>
+        ///Removes document from blob storage
+        ///</summary>
+        ///<param name="FileName">Name of the file to be removed</param>
         public static async Task RemoveDocumentFromQueue(string FileName)
         {
             BlobClient blobClient = new BlobClient(cs, "customer", FileName);
