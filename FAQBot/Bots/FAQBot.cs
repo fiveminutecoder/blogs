@@ -41,6 +41,7 @@ namespace EchoBot.Bots
             predictionEngine = context.Model.CreatePredictionEngine<FAQModel, PredictionModel>(trainedModel);
 
         }
+        
         protected override async Task OnMessageActivityAsync(ITurnContext<IMessageActivity> turnContext, CancellationToken cancellationToken)
         {
             //creates our FAQ model

@@ -32,7 +32,8 @@ namespace mlnet_NLP
         static void TrainModel()
         {
             context = new MLContext();
-
+            context.Log += new EventHandler<LoggingEventArgs>(LogMLEvents);
+            
             //Load data from csv file
             var data = context.Data.LoadFromTextFile<FAQModel>("faq.csv", hasHeader:true, separatorChar: ',', allowQuoting: true, allowSparse:true, trimWhitespace: true);
             
@@ -98,6 +99,12 @@ namespace mlnet_NLP
             {
                 return context.Model.Load(s, out modelSchema);
             }
+        }
+
+        protected static void LogMLEvents(object sender, LoggingEventArgs e)
+        {
+            
+            Console.WriteLine(e.RawMessage);
         }
     }
 }
