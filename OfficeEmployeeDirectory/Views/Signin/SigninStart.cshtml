@@ -1,0 +1,71 @@
+﻿@page
+@model OfficeEmployeeDirectory.Views.Signin.SigninStartModel
+@{
+}
+
+
+<h1>Signing you in now</h1>
+
+    //calls the teams login
+    <script type="text/javascript">
+        let clientId = "@ViewBag.ClientId";
+        if (clientId != undefined && clientId != null && clientId !== '') {
+            microsoftTeams.initialize();
+                let state = _guid();
+                localStorage.setItem("simple.state", state);
+                localStorage.removeItem("simple.error");
+                // See https://docs.microsoft.com/en-us/azure/active-directory/develop/active-directory-v2-protocols-implicit
+                // for documentation on these query parameters
+
+                let queryParams = {
+                    client_id: clientId,
+                    response_type: "id_token token", //what we want returned
+                    response_mode: "fragment",
+                    resource: "https://graph.microsoft.com/", //resource we need access to
+                    redirect_uri: "@ViewBag.ReturnUrl", //return url
+                    nonce: _guid(),//unique value to reference in callback so our app can validate it was us making the call
+                    state: state
+                };
+
+                let authorizeEndpoint =
+                    "https://login.microsoftonline.com/common/oauth2/authorize?" +
+                        toQueryString(queryParams);
+                window.location.assign(authorizeEndpoint);
+
+        }
+        // Build query string from map of query parameter
+        function toQueryString(queryParams) {
+            let encodedQueryParams = [];
+            for (let key in queryParams) {
+                encodedQueryParams.push(
+                    key + "=" + encodeURIComponent(queryParams[key])
+                );
+            }
+            return encodedQueryParams.join("&");
+        }
+        
+        //Create a unique identifier to validate the callback
+        function _guid() {
+                let guidHolder = "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx";
+                let hex = "0123456789abcdef";
+                let r = 0;
+                let guidResponse = "";
+                for (let i = 0; i < 36; i++) {
+                    if (guidHolder[i] !== "-" && guidHolder[i] !== "4") {
+                        // each x and y needs to be random
+                        r = (Math.random() * 16) | 0;
+                    }
+                    if (guidHolder[i] === "x") {
+                        guidResponse += hex[r];
+                    } else if (guidHolder[i] === "y") {
+                        // clock-seq-and-reserved first hex is filtered and remaining hex values are random
+                        r &= 0x3; // bit and with 0011 to set pos 2 to zero ?0??
+                        r |= 0x8; // set pos 3 to 1 as 1???
+                        guidResponse += hex[r];
+                    } else {
+                        guidResponse += guidHolder[i];
+                    }
+                }
+                return guidResponse;
+        }
+    </script>

@@ -1,0 +1,73 @@
+﻿@{
+    ViewData["Title"] = "Employee Directory";
+}
+<!-- some basic styling-->
+<style>
+    .card{
+        width:400px;
+        height:200px;
+        border:1px solid black;
+        margin-bottom: 20px;
+        padding: 5px;
+    }
+</style>
+<h1>Employee Directory</h1>
+
+    <label id="jsonResponse"></label>
+</div>
+
+<script>
+//run our script when window loads
+window.addEventListener("load", function(){
+
+    //load the microsoft teams SDK
+     microsoftTeams.initialize();
+
+    //params for our login method
+    authenticateParams = {
+        successCallback: function(result){
+            var token = result["idToken"];
+            var access_token = result["accessToken"];
+            GetEmployeeDirectory(token);
+        },
+        failureCallback: function(reason){
+            alert("failed: " + reason);
+        },
+        height: 200,
+        width: 200,
+        url: "@ViewBag.SignInUrl"
+    }
+
+    //start authentication process
+    microsoftTeams.authentication.authenticate(authenticateParams);
+
+});
+    
+
+    //success callback to our secure api
+    function GetEmployeeDirectory(token){
+            fetch("/Home/GetDirectory", {
+                method: "GET",
+                headers: {
+                    "content-type": "application/json;odata=verbose",
+                    "Accept": "application/json; odata=verbose",
+                    "Authorization": "Bearer " + token
+                }
+            })
+            .then(response =>response.json())
+            .then(results =>{
+                // creates an html object to be rendered in our app
+                 for(var i = 0; i < results.length; i++){
+                     let div = document.createElement("div")
+                     div.className = "card"
+                     div.append(results[i].displayName);
+                     div.append(document.createElement("br"))
+                     div.append( results[i].mail)
+                     div.append(document.createElement("br"))
+                     div.append(results[i].businessPhones.length > 0 ? results[i].businessPhones[0] : document.createElement("label"))
+                     document.getElementById("jsonResponse").append(div);
+                 }
+            });
+    }
+    
+</script>

@@ -1,0 +1,49 @@
+{
+    "$schema": "https://developer.microsoft.com/en-us/json-schemas/teams/v1.9/MicrosoftTeams.schema.json",
+    "manifestVersion": "1.9",
+    "version": "1.0.0",
+    "id": "361e9099-ddab-46a6-99e3-d1f66ea2c573",
+    "packageName": "officedirectory",
+    "developer": {
+        "name": "Five Minute Coder",
+        "websiteUrl": "https://fiveminutecoder.com",
+        "privacyUrl": "https://www.fiveminutecoder.com/2021/04/securing-microsoft-teams-tab-using.html",
+        "termsOfUseUrl": "https://www.fiveminutecoder.com/2021/04/securing-microsoft-teams-tab-using.html"
+    },
+    "icons": {
+        "color": "color.png",
+        "outline": "outline.png"
+    },
+    "name": {
+        "short": "Office Directory",
+        "full": "Office Directory Using Graph"
+    },
+    "description": {
+        "short": "Pulls user info from Microsoft Graph",
+        "full": "Get User information using Microsoft graph securely using Microsoft Teams authentication "
+    },
+    "accentColor": "#FFFFFF",
+    "staticTabs": [
+        {
+            "entityId": "OfficeDirectoryTab",
+            "name": "Office Directory",
+            "contentUrl": "https://78762fc73f53.ngrok.io",
+            "scopes": [
+                "personal"
+            ]
+        },
+        {
+            "entityId": "about",
+            "scopes": [
+                "personal"
+            ]
+        }
+    ],
+    "permissions": [
+        "identity",
+        "messageTeamMembers"
+    ],
+    "validDomains": [
+        "78762fc73f53.ngrok.io"
+    ]
+}
