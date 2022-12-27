@@ -1,0 +1,27 @@
+﻿<Window x:Class="FiveMintueInvoiceTagger.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:FiveMintueInvoiceTagger"
+        mc:Ignorable="d"
+        Title="Five Minute Invoice Tagger" Height="1000" Width="1600">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="500"></ColumnDefinition>
+            <ColumnDefinition Width="1100"></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="50"></RowDefinition>
+            <RowDefinition Height="750"></RowDefinition>
+            <RowDefinition Height="750"></RowDefinition>
+        </Grid.RowDefinitions>
+        <StackPanel Grid.Column="0" Grid.Row="0">
+        <Label  Content="Select an invoice..." />
+        <Button Content="Select Invoice" Click="UploadFile_Click" />
+        </StackPanel>
+        <Image Grid.Row="1" Grid.Column="0" Width="450" Height="800" Name="InvoiceImage" />
+    <DataGrid Grid.Row="1" Grid.Column="1" Height="800" Width="1050" Name="DocumentProperties" />
+    <Label Grid.Row="2" Grid.Column="0" Name="ErrorMsg" />
+    </Grid> 
+</Window>
